@@ -36,4 +36,3 @@ class ModelTests(TestCase):
         """Require email for new user test raised ValueError"""
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user('', 'test123')
-
