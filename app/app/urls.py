@@ -19,8 +19,10 @@ from drf_spectacular.views import (
 )
 from django.contrib import admin
 from django.urls import path, include
+from .views import home
 
 urlpatterns = [
+    path('', home, name='home' ),
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
     path(
