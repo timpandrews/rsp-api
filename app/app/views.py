@@ -7,6 +7,6 @@ def home(request):
     html = "<html><body>"
     html += "<h1>RSP-API</h1>"
     html += "It is now %s." % now
-    html += "<br><br><div><a href='/api/docs/'>Schema</a><div>"
+    html += "<br><br><div><a href='/api/docs/'>API Docs</a><div>"
     html += "</body></html>"
     return HttpResponse(html)
