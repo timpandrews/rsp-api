@@ -7,7 +7,7 @@ from rest_framework import status
 
 
 CREATE_USER_URL = reverse('user:create')
-TOKERN_URL = reverse('user:token')
+TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
 
 
@@ -54,7 +54,7 @@ class PublicUserApiTests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'pw',
-            'name': 'Test Name',
+            'name': 'Test name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -77,7 +77,7 @@ class PublicUserApiTests(TestCase):
             'email': user_details['email'],
             'password': user_details['password']
         }
-        res = self.client.post(TOKERN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload)
 
         self.assertIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -90,7 +90,7 @@ class PublicUserApiTests(TestCase):
             'email': 'test@example.com',
             'password': 'badpass'
         }
-        res = self.client.post(TOKERN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -101,7 +101,7 @@ class PublicUserApiTests(TestCase):
             'email': 'test@example.com',
             'password': ''
         }
-        res = self.client.post(TOKERN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -113,7 +113,7 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateUserApiTest(TestCase):
+class PrivateUserApiTests(TestCase):
     """Tests for API requests that require authentication"""
 
     def setUp(self):
@@ -122,10 +122,10 @@ class PrivateUserApiTest(TestCase):
             password='testpass123',
             name='Test Name',
         )
-        self.client = APIClient
+        self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    def test_retrieve_profile_Success(self):
+    def test_retrieve_profile_success(self):
         """Test retrieving profile for logged in user"""
         res = self.client.get(ME_URL)
 
