@@ -17,7 +17,7 @@ TAGS_URL = reverse('recipe:tag-list')
 
 
 def create_user(email='user@example.com', password='testpass123'):
-    """Create and return a new user"""
+    """Create and return a user"""
     return get_user_model().objects.create_user(email, password)
 
 
@@ -25,7 +25,7 @@ class PublicTagsApiTests(TestCase):
     """Test unauthenticated API Requests"""
 
     def setUp(self):
-        self.client = APIClient
+        self.client = APIClient()
 
     def test_auth_required(self):
         """Test auth is required for retrieving tags"""
@@ -39,7 +39,7 @@ class PrivateTagsApiTests(TestCase):
 
     def setUp(self):
         self.user = create_user()
-        self.client = APIClient
+        self.client = APIClient()
         self.client.force_authenticate(self.user)
 
     def test_retrieve_tags(self):
