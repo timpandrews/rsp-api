@@ -43,12 +43,13 @@ def create_recipe(user, **params):
 
 def create_user(**params):
     """Create and return a new user"""
+    return get_user_model().objects.create_user(**params)
 
 
 class PublicRecipeAPITests(TestCase):
     """Tests for unauthenticated API requests"""
 
-    def setUP(self):
+    def setUp(self):
         self.client = APIClient()
 
     def test_auth_required(self):
@@ -58,12 +59,12 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeAPITests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Tests for authenticated API requests"""
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(user='user@example.com', password='test123')
+        self.user = create_user(email='user@example.com', password='test123')
         self.client.force_authenticate(self.user)
 
     def test_retrive_recipes(self):
@@ -105,7 +106,7 @@ class PrivateRecipeAPITests(TestCase):
         payload = {
             'title': 'Sample recipe',
             'time_minutes': 30,
-            'price': Decimal('5.99')
+            'price': Decimal('5.99'),
         }
         res = self.client.post(RECIPES_URL, payload)
 
@@ -117,10 +118,10 @@ class PrivateRecipeAPITests(TestCase):
 
     def test_partial_update(self):
         """Test partial update of a recipe"""
-        original_link = 'http://example.com/recipe.pdf'
+        original_link = 'https://example.com/recipe.pdf'
         recipe = create_recipe(
             user=self.user,
-            title='Sample recipe Title',
+            title='Sample recipe title',
             link=original_link,
         )
 
